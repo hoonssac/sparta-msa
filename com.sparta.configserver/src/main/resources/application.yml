@@ -1,0 +1,22 @@
+server:
+  port: 3100
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/yonggyo1125/project-configs2
+          default-label: main
+          search-paths: 'configs/{application}'
+          basedir: ./tmp/config-repo
+          clone-on-start: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:3101/eureka/
