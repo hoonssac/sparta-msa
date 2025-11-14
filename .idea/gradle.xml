@@ -28,6 +28,14 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/com.sparta.kafkaserver" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/com.sparta.kafkaserver" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/com.sparta.productservice" />
         <option name="modules">
           <set>

@@ -4,6 +4,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/com.sparta.configserver" />
     <file type="web" url="file://$PROJECT_DIR$/com.sparta.gatewayserver" />
+    <file type="web" url="file://$PROJECT_DIR$/com.sparta.kafkaserver" />
     <file type="web" url="file://$PROJECT_DIR$/com.sparta.productservice" />
     <file type="web" url="file://$PROJECT_DIR$/com.sparta.userservice" />
   </component>
