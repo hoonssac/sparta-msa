@@ -34,7 +34,7 @@ services:
     volumes:
       - postgres-keycloak-data:/var/lib/postgresql/data
     ports:
-      - '3998:5432'
+      - '3998:3998'
     networks:
       - msa-network
     healthcheck:
@@ -67,7 +67,7 @@ services:
     command:
       - start-dev
     ports:
-      - '3300:8080'
+      - '3200:3200'
     depends_on:
       postgres:
         condition: service_healthy
@@ -81,11 +81,68 @@ services:
       timeout: 10s
       retries: 5
 
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    restart: always
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - '9090:9090'
+    user: root
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - monitoring-network
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    restart: always
+    ports:
+      - '6001:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    user: root
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_SECURITY_ADMIN_USER: admin
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - monitoring-network
+
+  loki:
+    container_name: loki
+    image: grafana/loki:latest
+    restart: always
+    ports:
+      - '5100:5100'
+    volumes:
+      - ./monitoring/loki/loki-config.yml:/etc/loki/loki-config.yaml
+      - loki-data:/loki
+    command: -config.file=/etc/loki/loki-config.yaml
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - monitoring-network
+
 volumes:
   rabbitmq-data:
   postgres-keycloak-data:
   keycloak-data:
+  prometheus-data:
+  grafana-data:
+  loki-data:
 
 networks:
   msa-network:
+    driver: bridge
+  monitoring-network:
     driver: bridge
